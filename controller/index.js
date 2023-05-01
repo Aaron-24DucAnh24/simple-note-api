@@ -39,12 +39,30 @@ class Controller {
     }
 
     async addNote(req, res) {
-        const ret =  await firebaseHelper.addNote(req.session.user, req.body.title, req.body.content)
+        var content = req.body.content
+        if(req.body.type == 'task') {
+            content = []
+            for(var ele of req.body.content) {
+                content.push(ele.content)
+                content.push(ele.isChecked)
+            }
+        }
+        
+        const ret = await firebaseHelper.addNote(req.session.user, req.body.title, content, req.body.type)
         res.json(ret)
     }
 
     async editNote(req, res) {
-        const ret = await firebaseHelper.editNote(req.body.id, req.body.title, req.body.content)
+        var content = req.body.content
+        if(req.body.type == 'task') {
+            content = []
+            for(var ele of req.body.content) {
+                content.push(ele.content)
+                content.push(ele.isChecked)
+            }
+        }
+
+        const ret = await firebaseHelper.editNote(req.body.id, req.body.title, content)
         res.json(ret)
     }
 

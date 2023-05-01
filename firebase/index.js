@@ -46,6 +46,12 @@ class FirebaseHelper {
             message.forEach(function(doc) {
                 data =  doc.data()
                 data.id = doc.id
+                if(data.type == 'task') {
+                    var newContent = []
+                    for(var i = 0; i < data.content.length; i+=2)
+                        newContent.push({content: data.content[i], isChecked: data.content[i+1]})
+                    data.content = newContent
+                }
                 ret.push(data)
             })
             return ret
@@ -57,13 +63,14 @@ class FirebaseHelper {
 
     }
 
-    async addNote(owner, title, content) {
+    async addNote(owner, title, content, type) {
         try {
             const ret = await noteRef.add({
                 'owner': owner,
                 'title': title,
                 'content': content,
                 'time': FieldValue.serverTimestamp(),
+                'type': type,
             })
             return ret.id
 
