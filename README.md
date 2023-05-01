@@ -2,6 +2,7 @@
 #### About
 This is an HTTP server created by ***ExpressJS-NodeJS*** provide API for ***Simple note*** mobile app.
 ### Run
+Get json config file from Firebase website, add it to ***"./firebase"***.
 ```bash
 npm install
 npm start
